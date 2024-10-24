@@ -194,9 +194,10 @@
 		"setenv bootargs root=/dev/mmcblk0p1 rw rootwait ${cmdline_append};" \
 		"bootz ${kernel_addr_r} - ${fdt_addr_r};\0" \
 	"sdroot=echo Booting from the SD Card ...;" \
-		"load tssdcard 0:1 ${fdt_addr_r} /boot/armada-385-ts7800-v2.dtb;" \
-		"load tssdcard 0:1 ${kernel_addr_r} /boot/zImage;" \
-		"setenv bootargs root=/dev/tssdcarda1 rw rootwait ${cmdline_append};" \
+		"run mender_setup; " \
+		"load tssdcard 0:2 ${fdt_addr_r} /boot/armada-385-ts7800-v2.dtb;" \
+		"load tssdcard 0:2 ${kernel_addr_r} /boot/zImage;" \
+		"setenv bootargs root=${mender_boot_part_name} rw rootwait ${cmdline_append};" \
 		"bootz ${kernel_addr_r} - ${fdt_addr_r};\0" \
 	"sataboot=echo Booting from SATA ...;" \
 		"scsi scan;" \
