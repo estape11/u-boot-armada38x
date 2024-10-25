@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Backup of the current script
+mv /usr/bin/fw_setenv /usr/bin/fw_setenv.bak
+
+# Create the symlink to fw_printenv
+ln -s /usr/bin/fw_printenv /usr/bin/fw_setenv
+
+# Unlock writing to the uboot env
+echo 0 > /sys/block/mmcblk0boot0/force_ro
+
+# Write to the uboot env
+fw_setenv "$@"
+
+# Lock the the uboot env
+echo 1 > /sys/block/mmcblk0boot0/force_ro
+
+# Delete the symlink
+rm /usr/bin/fw_setenv
+
+# Restores the current script
+mv /usr/bin/fw_setenv.bak /usr/bin/fw_setenv
